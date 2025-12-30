@@ -37,11 +37,14 @@ mkdir clang\build
 cd clang\build
 cmake .. %CLANG_CMAKE_CONFIGURE_FLAGS%
 cmake --build . %CMAKE_BUILD_FLAGS%
+
+echo Merging LLVM into Clang release...
+xcopy /E /Y /I %WORKING_DIR%\%LLVM_RELEASE_NAME%\* %WORKING_DIR%\%CLANG_RELEASE_NAME%\
+
 cmake --build . --target install %CMAKE_BUILD_FLAGS%
 
-cd %THIS_DIR%
-
-7z a -t7z %GITHUB_WORKSPACE%\%CLANG_RELEASE_FILE% %CLANG_RELEASE_NAME%
+cd %WORKING_DIR%\%CLANG_RELEASE_NAME%
+7z a -t7z %GITHUB_WORKSPACE%\%CLANG_RELEASE_FILE% *
 
 goto :eof
 
