@@ -1,8 +1,10 @@
 name: GitHub CI
 
 on:
--   push
--   pull_request
+  push:
+    # Pattern matched against refs/tags
+    tags:        
+      - '**'           # Push events to every tag including hierarchical tags like v1.0/beta
 
 jobs:
     windowsBuild:
@@ -11,7 +13,7 @@ jobs:
         env:
             BUILD_PROJECT: clang
             BUILD_MASTER: false
-            LLVM_VERSION: 21.1.1
+            LLVM_VERSION: ${{ github.ref_name }}
 
         strategy:
             fail-fast: false
@@ -21,7 +23,6 @@ jobs:
                 -   libcmt
 
                 TARGET_CPU:
-                -   x86
                 -   amd64
 
                 CONFIGURATION:
